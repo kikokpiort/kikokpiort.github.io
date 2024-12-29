@@ -1,4 +1,4 @@
-﻿﻿<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -102,8 +102,8 @@
         <option value="猪">猪</option>
     </select>
     <br>
-    <button class="button" id="btn1" onclick="generateNumbers1()">逆天改命，就在今天，3弟弟出来吧</button>
-    <button class="button" id="btn2" onclick="generateNumbers2()">逆天改命就在今天,翻滚吧双色球</button>
+    <button class="button" id="btn1" onclick="generateNumbers1()">逆天改命，就在今天，3D不中你找我</button>
+    <button class="button" id="btn2" onclick="generateNumbers2()">双色球,不中500万你找我</button>
     <div id="result"></div>
 
     <script>
@@ -117,7 +117,7 @@
                 '#ff99cc', '#99ffcc', '#ccff99', '#ffcc99', '#99ccff',
                 '#cc99ff', '#ff9999', '#99ff99', '#9999ff', '#ff99ff'
             ];
-            for (let i = 0; i < 15; i++) {
+            for (let i = 0; i < 19; i++) {
                 setTimeout(() => {
                     document.body.style.background = colors[Math.floor(Math.random() * colors.length)];
                 }, i * 120);
@@ -126,7 +126,7 @@
 
         function generateNumbers1() {
             if (Date.now() - lastClickTime < 5000) {
-                alert('慌啥嘞，奖又跑不了');
+                alert('不要一直点了，奖又跑不了');
                 return;
             }
             if (!validateSelections()) return;
@@ -140,7 +140,7 @@
                     numbers.push(Math.floor(Math.random() * 10));
                 }
                 const resultDiv = document.getElementById('result');
-                resultDiv.innerHTML = '<div class="result">就买这个号必中</div>';
+                resultDiv.innerHTML = '<div class="result">就买这个号必中，明天直接去建材城</div>';
                 numbers.forEach(num => {
                     const ball = document.createElement('div');
                     ball.className = 'ball random-ball';
@@ -153,7 +153,7 @@
 
         function generateNumbers2() {
             if (Date.now() - lastClickTime < 5000) {
-                alert('慌啥嘞，奖又跑不了');
+                alert('停一会再点，奖又跑不了');
                 return;
             }
             if (!validateSelections()) return;
@@ -161,22 +161,45 @@
             lastClickTime = Date.now();
             changeBackgroundColor();
 
-            setTimeout(() => {
-                const redNumbers = Array.from({ length: 6 }, () => Math.floor(Math.random() * 33) + 1);
-                const blueNumber = Math.floor(Math.random() * 16) + 1;
-                const resultDiv = document.getElementById('result');
-                resultDiv.innerHTML = '<div class="result">买这个号你不中奖谁中奖</div>';
-                redNumbers.forEach(num => {
-                    const ball = document.createElement('div');
-                    ball.className = 'ball red-ball';
-                    ball.textContent = num;
-                    resultDiv.appendChild(ball);
-                });
-                const blueBall = document.createElement('div');
-                blueBall.className = 'ball blue-ball';
-                blueBall.textContent = blueNumber;
-                resultDiv.appendChild(blueBall);
-            }, 3000);
+           setTimeout(() => {
+    // 创建包含1到33的数组
+    const allNumbers = Array.from({ length: 33 }, (_, i) => i + 1);
+    
+    // 打乱数组
+    for (let i = allNumbers.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [allNumbers[i], allNumbers[j]] = [allNumbers[j], allNumbers[i]]; // 交换位置
+    }
+
+    // 获取前6个随机的红球号码
+    const redNumbers = allNumbers.slice(0, 6);
+
+    // 对红球号码进行排序（从小到大）
+    redNumbers.sort((a, b) => a - b);
+
+    // 生成一个蓝球号码
+    const blueNumber = Math.floor(Math.random() * 16) + 1;
+
+    // 更新网页内容
+    const resultDiv = document.getElementById('result');
+    resultDiv.innerHTML = '<div class="result">买这个号你不中奖谁中奖</div>';
+
+    // 创建红球元素并添加到页面
+    redNumbers.forEach(num => {
+        const ball = document.createElement('div');
+        ball.className = 'ball red-ball';
+        ball.textContent = num;
+        resultDiv.appendChild(ball);
+    });
+
+    // 创建蓝球元素并添加到页面
+    const blueBall = document.createElement('div');
+    blueBall.className = 'ball blue-ball';
+    blueBall.textContent = blueNumber;
+    resultDiv.appendChild(blueBall);
+
+}, 3000);
+
         }
 
         function validateSelections() {
