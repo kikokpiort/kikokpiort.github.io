@@ -203,8 +203,8 @@
                         const redNumbers = randomNumbers(1, 33, 6).sort((a, b) => a - b);
                         const blueNumber = randomNumbers(1, 16, 1)[0];
                         redNumbers.forEach(num => resultDiv.appendChild(createBall('red', num)));
-                        resultDiv.innerHTML += '<div class="result-text">买这个号明天直接去建材城</div>';
                         resultDiv.appendChild(createBall('blue', blueNumber));
+                        resultDiv.innerHTML += '<div class="result-text">买这个号明天直接去建材城</div>';
                     }
                 }
             }, 120);
