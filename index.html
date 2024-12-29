@@ -1,0 +1,195 @@
+﻿﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>鸭池彩票生成网 一般人我不告诉他</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(45deg, #000046, #1CB5E0);
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            margin-top: 20px;
+        }
+        .button {
+            background: linear-gradient(45deg, #ff00cc, #333399);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+        .button:hover {
+            background: linear-gradient(45deg, #333399, #ff00cc);
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 24px;
+        }
+        .ball {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+            border-radius: 50%;
+            margin: 5px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .red-ball {
+            background-color: red;
+            color: white;
+        }
+        .blue-ball {
+            background-color: blue;
+            color: white;
+        }
+        .random-ball {
+            background-color: #ff00cc;
+            color: white;
+        }
+        select {
+            margin: 10px;
+            padding: 5px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>鸭池彩票生成网<br>一般人我不告诉他</h1>
+    <select id="zodiac">
+        <option value="">选择你的星座</option>
+        <option value="白羊座">白羊座</option>
+        <option value="金牛座">金牛座</option>
+        <option value="双子座">双子座</option>
+        <option value="巨蟹座">巨蟹座</option>
+        <option value="狮子座">狮子座</option>
+        <option value="处女座">处女座</option>
+        <option value="天秤座">天秤座</option>
+        <option value="天蝎座">天蝎座</option>
+        <option value="射手座">射手座</option>
+        <option value="摩羯座">摩羯座</option>
+        <option value="水瓶座">水瓶座</option>
+        <option value="双鱼座">双鱼座</option>
+    </select>
+    <select id="blood-type">
+        <option value="">选择你的血型</option>
+        <option value="A型">A型</option>
+        <option value="B型">B型</option>
+        <option value="O型">O型</option>
+        <option value="AB型">AB型</option>
+    </select>
+    <select id="chinese-zodiac">
+        <option value="">选择你的生肖</option>
+        <option value="鼠">鼠</option>
+        <option value="牛">牛</option>
+        <option value="虎">虎</option>
+        <option value="兔">兔</option>
+        <option value="龙">龙</option>
+        <option value="蛇">蛇</option>
+        <option value="马">马</option>
+        <option value="羊">羊</option>
+        <option value="猴">猴</option>
+        <option value="鸡">鸡</option>
+        <option value="狗">狗</option>
+        <option value="猪">猪</option>
+    </select>
+    <br>
+    <button class="button" id="btn1" onclick="generateNumbers1()">逆天改命，就在今天，3弟弟出来吧</button>
+    <button class="button" id="btn2" onclick="generateNumbers2()">逆天改命就在今天,翻滚吧双色球</button>
+    <div id="result"></div>
+
+    <script>
+        let lastClickTime = 0;
+
+        function changeBackgroundColor() {
+            const colors = [
+                '#ff00cc', '#333399', '#00ffcc', '#ffcc00', '#cc00ff',
+                '#ff6600', '#00ff00', '#0000ff', '#ff0000', '#cccccc',
+                '#666666', '#999999', '#bbbbbb', '#eeeeee', '#ffffff',
+                '#ff99cc', '#99ffcc', '#ccff99', '#ffcc99', '#99ccff',
+                '#cc99ff', '#ff9999', '#99ff99', '#9999ff', '#ff99ff'
+            ];
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    document.body.style.background = colors[Math.floor(Math.random() * colors.length)];
+                }, i * 120);
+            }
+        }
+
+        function generateNumbers1() {
+            if (Date.now() - lastClickTime < 5000) {
+                alert('慌啥嘞，奖又跑不了');
+                return;
+            }
+            if (!validateSelections()) return;
+
+            lastClickTime = Date.now();
+            changeBackgroundColor();
+
+            setTimeout(() => {
+                const numbers = [];
+                for (let i = 0; i < 3; i++) {
+                    numbers.push(Math.floor(Math.random() * 10));
+                }
+                const resultDiv = document.getElementById('result');
+                resultDiv.innerHTML = '<div class="result">就买这个号必中</div>';
+                numbers.forEach(num => {
+                    const ball = document.createElement('div');
+                    ball.className = 'ball random-ball';
+                    ball.style.backgroundColor = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+                    ball.textContent = num;
+                    resultDiv.appendChild(ball);
+                });
+            }, 3000);
+        }
+
+        function generateNumbers2() {
+            if (Date.now() - lastClickTime < 5000) {
+                alert('慌啥嘞，奖又跑不了');
+                return;
+            }
+            if (!validateSelections()) return;
+
+            lastClickTime = Date.now();
+            changeBackgroundColor();
+
+            setTimeout(() => {
+                const redNumbers = Array.from({ length: 6 }, () => Math.floor(Math.random() * 33) + 1);
+                const blueNumber = Math.floor(Math.random() * 16) + 1;
+                const resultDiv = document.getElementById('result');
+                resultDiv.innerHTML = '<div class="result">买这个号你不中奖谁中奖</div>';
+                redNumbers.forEach(num => {
+                    const ball = document.createElement('div');
+                    ball.className = 'ball red-ball';
+                    ball.textContent = num;
+                    resultDiv.appendChild(ball);
+                });
+                const blueBall = document.createElement('div');
+                blueBall.className = 'ball blue-ball';
+                blueBall.textContent = blueNumber;
+                resultDiv.appendChild(blueBall);
+            }, 3000);
+        }
+
+        function validateSelections() {
+            const zodiac = document.getElementById('zodiac').value;
+            const bloodType = document.getElementById('blood-type').value;
+            const chineseZodiac = document.getElementById('chinese-zodiac').value;
+            if (!zodiac || !bloodType || !chineseZodiac) {
+                alert('不选星座中不了奖啊玺总');
+                return false;
+            }
+            return true;
+        }
+    </script>
+</body>
+</html>
+
