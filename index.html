@@ -1,70 +1,90 @@
-﻿<!DOCTYPE html>
-<html lang="zh-CN">
+<!DOCTYPE html>
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>鸭池彩票生成网 一般人我不告诉他</title>
+    <title>鸭池彩票生成网 - 一般人我不告诉他</title>
     <style>
         body {
+            background: linear-gradient(45deg, #1f1f1f, #444444, #1f1f1f);
+            background-size: 200% 200%;
+            animation: backgroundAnimation 5s ease infinite;
             font-family: Arial, sans-serif;
-            background: linear-gradient(45deg, #000046, #1CB5E0);
             color: white;
             text-align: center;
-            margin: 0;
-            padding: 0;
+            padding: 50px;
         }
+
         h1 {
-            margin-top: 20px;
+            font-size: 2.5rem;
+            margin: 20px 0;
         }
-        .button {
-            background: linear-gradient(45deg, #ff00cc, #333399);
+
+        .btn {
+            background: #00ff99;
             color: white;
+            padding: 15px 40px;
+            font-size: 1.2rem;
             border: none;
-            padding: 10px 20px;
-            margin: 10px;
-            cursor: pointer;
-            font-size: 16px;
             border-radius: 5px;
+            cursor: pointer;
+            margin: 20px;
+            box-shadow: 0 0 20px rgba(0, 255, 153, 0.5);
+            transition: background-color 0.3s ease;
         }
-        .button:hover {
-            background: linear-gradient(45deg, #333399, #ff00cc);
+
+        .btn:hover {
+            background: #009966;
         }
-        .result {
-            margin-top: 20px;
-            font-size: 24px;
-        }
+
         .ball {
             display: inline-block;
             width: 50px;
             height: 50px;
-            line-height: 50px;
             border-radius: 50%;
-            margin: 5px;
-            font-size: 20px;
-            font-weight: bold;
-        }
-        .red-ball {
-            background-color: red;
             color: white;
-        }
-        .blue-ball {
-            background-color: blue;
-            color: white;
-        }
-        .random-ball {
-            background-color: #ff00cc;
-            color: white;
-        }
-        select {
+            line-height: 50px;
             margin: 10px;
-            padding: 5px;
-            font-size: 16px;
+            font-size: 1.5rem;
+        }
+
+        .result-text {
+            font-size: 1.2rem;
+            margin: 10px 0;
+        }
+
+        select {
+            padding: 10px;
+            margin: 10px;
+            font-size: 1rem;
+            border-radius: 5px;
+            background-color: #444;
+            color: white;
+            border: 1px solid #888;
+        }
+
+        #result {
+            margin-top: 30px;
+        }
+
+        @keyframes backgroundAnimation {
+            0% {
+                background-position: 0% 0%;
+            }
+            50% {
+                background-position: 100% 100%;
+            }
+            100% {
+                background-position: 0% 0%;
+            }
         }
     </style>
 </head>
 <body>
+
     <h1>鸭池彩票生成网<br>一般人我不告诉他</h1>
-    <select id="zodiac">
+
+    <select id="starSign">
         <option value="">选择你的星座</option>
         <option value="白羊座">白羊座</option>
         <option value="金牛座">金牛座</option>
@@ -79,14 +99,16 @@
         <option value="水瓶座">水瓶座</option>
         <option value="双鱼座">双鱼座</option>
     </select>
-    <select id="blood-type">
+
+    <select id="bloodType">
         <option value="">选择你的血型</option>
         <option value="A型">A型</option>
         <option value="B型">B型</option>
-        <option value="O型">O型</option>
         <option value="AB型">AB型</option>
+        <option value="O型">O型</option>
     </select>
-    <select id="chinese-zodiac">
+
+    <select id="zodiac">
         <option value="">选择你的生肖</option>
         <option value="鼠">鼠</option>
         <option value="牛">牛</option>
@@ -101,118 +123,96 @@
         <option value="狗">狗</option>
         <option value="猪">猪</option>
     </select>
-    <br>
-    <button class="button" id="btn1" onclick="generateNumbers1()">逆天改命，就在今天，3D不中你找我</button>
-    <button class="button" id="btn2" onclick="generateNumbers2()">双色球,不中500万你找我</button>
+
+    <br><br>
+
+    <button id="btn1" class="btn">逆天改命，买3D就点我，不中奖我赔你</button>
+    <button id="btn2" class="btn">逆天改命就在今天，买双色球必中500万</button>
+
     <div id="result"></div>
 
     <script>
-        let lastClickTime = 0;
+        let lastClickedTime = 0;
+        const colorList = ['#ff6347', '#ff4500', '#2e8b57', '#4682b4', '#d2691e', '#8b0000', '#adff2f', '#00fa9a', '#cd5c5c', '#f0e68c',
+            '#dda0dd', '#90ee90', '#00bfff', '#ff1493', '#ff8c00', '#da70d6', '#8b4513', '#ff69b4', '#ffdead', '#c71585', '#32cd32', '#8a2be2', '#f5deb3', '#f08080', '#e9967a'];
 
-        function changeBackgroundColor() {
-            const colors = [
-                '#ff00cc', '#333399', '#00ffcc', '#ffcc00', '#cc00ff',
-                '#ff6600', '#00ff00', '#0000ff', '#ff0000', '#cccccc',
-                '#666666', '#999999', '#bbbbbb', '#eeeeee', '#ffffff',
-                '#ff99cc', '#99ffcc', '#ccff99', '#ffcc99', '#99ccff',
-                '#cc99ff', '#ff9999', '#99ff99', '#9999ff', '#ff99ff'
-            ];
-            for (let i = 0; i < 19; i++) {
-                setTimeout(() => {
-                    document.body.style.background = colors[Math.floor(Math.random() * colors.length)];
-                }, i * 120);
+        function generateRandomColors() {
+            let colors = [];
+            for (let i = 0; i < 25; i++) {
+                colors.push(colorList[Math.floor(Math.random() * colorList.length)]);
             }
+            return colors;
         }
 
-        function generateNumbers1() {
-            if (Date.now() - lastClickTime < 5000) {
-                alert('不要一直点了，奖又跑不了');
-                return;
-            }
-            if (!validateSelections()) return;
-
-            lastClickTime = Date.now();
-            changeBackgroundColor();
-
-            setTimeout(() => {
-                const numbers = [];
-                for (let i = 0; i < 3; i++) {
-                    numbers.push(Math.floor(Math.random() * 10));
+        function randomNumbers(min, max, count) {
+            let numbers = [];
+            while (numbers.length < count) {
+                const num = Math.floor(Math.random() * (max - min + 1)) + min;
+                if (!numbers.includes(num)) {
+                    numbers.push(num);
                 }
-                const resultDiv = document.getElementById('result');
-                resultDiv.innerHTML = '<div class="result">就买这个号必中，明天直接去建材城</div>';
-                numbers.forEach(num => {
-                    const ball = document.createElement('div');
-                    ball.className = 'ball random-ball';
-                    ball.style.backgroundColor = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
-                    ball.textContent = num;
-                    resultDiv.appendChild(ball);
-                });
-            }, 3000);
+            }
+            return numbers;
         }
 
-        function generateNumbers2() {
-            if (Date.now() - lastClickTime < 5000) {
-                alert('停一会再点，奖又跑不了');
+        function resetBackgroundColor() {
+            document.body.style.background = 'linear-gradient(45deg, #1f1f1f, #444444, #1f1f1f)';
+        }
+
+        function createBall(color, number) {
+            const ball = document.createElement('div');
+            ball.className = 'ball';
+            ball.style.backgroundColor = color;
+            ball.textContent = number;
+            return ball;
+        }
+
+        function handleButtonClick(btnId) {
+            const currentTime = Date.now();
+            if (currentTime - lastClickedTime < 5000) {
+                alert('你点的太猛了，奖又跑不了，一会再点等，5秒换换气');
                 return;
             }
-            if (!validateSelections()) return;
+            lastClickedTime = currentTime;
 
-            lastClickTime = Date.now();
-            changeBackgroundColor();
-
-           setTimeout(() => {
-    // 创建包含1到33的数组
-    const allNumbers = Array.from({ length: 33 }, (_, i) => i + 1);
-    
-    // 打乱数组
-    for (let i = allNumbers.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [allNumbers[i], allNumbers[j]] = [allNumbers[j], allNumbers[i]]; // 交换位置
-    }
-
-    // 获取前6个随机的红球号码
-    const redNumbers = allNumbers.slice(0, 6);
-
-    // 对红球号码进行排序（从小到大）
-    redNumbers.sort((a, b) => a - b);
-
-    // 生成一个蓝球号码
-    const blueNumber = Math.floor(Math.random() * 16) + 1;
-
-    // 更新网页内容
-    const resultDiv = document.getElementById('result');
-    resultDiv.innerHTML = '<div class="result">买这个号你不中奖谁中奖</div>';
-
-    // 创建红球元素并添加到页面
-    redNumbers.forEach(num => {
-        const ball = document.createElement('div');
-        ball.className = 'ball red-ball';
-        ball.textContent = num;
-        resultDiv.appendChild(ball);
-    });
-
-    // 创建蓝球元素并添加到页面
-    const blueBall = document.createElement('div');
-    blueBall.className = 'ball blue-ball';
-    blueBall.textContent = blueNumber;
-    resultDiv.appendChild(blueBall);
-
-}, 3000);
-
-        }
-
-        function validateSelections() {
+            const starSign = document.getElementById('starSign').value;
+            const bloodType = document.getElementById('bloodType').value;
             const zodiac = document.getElementById('zodiac').value;
-            const bloodType = document.getElementById('blood-type').value;
-            const chineseZodiac = document.getElementById('chinese-zodiac').value;
-            if (!zodiac || !bloodType || !chineseZodiac) {
+
+            if (!starSign || !bloodType || !zodiac) {
                 alert('不选星座中不了奖啊玺总');
-                return false;
+                return;
             }
-            return true;
+
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = ''; // 清除上次的结果
+
+            const colors = generateRandomColors();
+            let colorIndex = 0;
+            const interval = setInterval(() => {
+                document.body.style.background = colors[colorIndex++];
+                if (colorIndex === colors.length) {
+                    clearInterval(interval);
+                    resetBackgroundColor();
+                    if (btnId === 'btn1') {
+                        const numbers = randomNumbers(0, 9, 3);
+                        const balls = numbers.map(num => createBall(colors[Math.floor(Math.random() * colors.length)], num));
+                        balls.forEach(ball => resultDiv.appendChild(ball));
+                        resultDiv.innerHTML += '<div class="result-text">就买这个号必中，中了请我河的板面就行</div>';
+                    } else if (btnId === 'btn2') {
+                        const redNumbers = randomNumbers(1, 33, 6).sort((a, b) => a - b);
+                        const blueNumber = randomNumbers(1, 16, 1)[0];
+                        redNumbers.forEach(num => resultDiv.appendChild(createBall('red', num)));
+                        resultDiv.innerHTML += '<div class="result-text">买这个号明天直接去建材城</div>';
+                        resultDiv.appendChild(createBall('blue', blueNumber));
+                    }
+                }
+            }, 120);
         }
+
+        document.getElementById('btn1').addEventListener('click', () => handleButtonClick('btn1'));
+        document.getElementById('btn2').addEventListener('click', () => handleButtonClick('btn2'));
     </script>
+
 </body>
 </html>
-
