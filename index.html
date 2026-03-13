@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>豪杰彩票无限</title>
+<title>尚壁无限彩票站</title>
 <style>
 * {
   margin: 0;
@@ -18,7 +18,6 @@ body {
   overflow: hidden;
   height: 100vh;
 }
-
 #stars {
   position: fixed;
   top: 0;
@@ -27,19 +26,16 @@ body {
   height: 100%;
   z-index: 0;
 }
-
 .content {
   position: relative;
   z-index: 2;
   padding: 40px 20px;
 }
-
 .title {
   font-size: 26px;
   margin-bottom: 30px;
   color: #ffd700;
 }
-
 button {
   display: block;
   width: 80%;
@@ -51,23 +47,21 @@ button {
   background: linear-gradient(90deg, #ff416c, #ff4b2b);
   color: white;
   font-weight: bold;
+  touch-action: manipulation;
 }
 button:disabled {
   background: #555;
 }
-
 #tip {
   margin: 20px 0;
   font-size: 18px;
   color: #fff;
 }
-
 #resultName {
   font-size: 22px;
   color: #ffd700;
   margin: 10px 0;
 }
-
 #ballArea {
   display: flex;
   justify-content: center;
@@ -76,7 +70,6 @@ button:disabled {
   margin: 20px 0;
   min-height: 60px;
 }
-
 .ball {
   width: 46px;
   height: 46px;
@@ -93,7 +86,6 @@ button:disabled {
 }
 .ball.red { background: #e00; }
 .ball.blue { background: #06f; }
-
 .roll::after {
   content: '88888888';
   position: absolute;
@@ -103,7 +95,6 @@ button:disabled {
   0% { transform: translateY(0); }
   100% { transform: translateY(-100%); }
 }
-
 #copy {
   padding: 10px 20px;
   background: #09f;
@@ -111,15 +102,14 @@ button:disabled {
   border: none;
   border-radius: 30px;
   display: none;
+  touch-action: manipulation;
 }
 </style>
 </head>
-
 <body>
 <canvas id="stars"></canvas>
-
 <div class="content">
-  <div class="title">豪杰彩票无限</div>
+  <div class="title">尚壁无限彩票站</div>
   <button id="btn1">双色球</button>
   <button id="btn2">大乐透</button>
   <button id="btn3">福彩3D</button>
@@ -136,7 +126,6 @@ let w = window.innerWidth;
 let h = window.innerHeight;
 cvs.width = w;
 cvs.height = h;
-
 const cx = w / 2;
 const cy = h / 2;
 
@@ -149,10 +138,8 @@ function initStar() {
     y: Math.random() * h,
     size: Math.random() * 1.5 + 0.5,
     baseSpeed: Math.random() * 0.2 + 0.1,
-    vanish: false
   };
 }
-
 for (let i = 0; i < starCount; i++) stars.push(initStar());
 
 let isWarp = false;
@@ -163,7 +150,6 @@ function draw() {
   ctx.fillStyle = '#000';
   ctx.fillRect(0, 0, w, h);
   ctx.fillStyle = '#fff';
-
   for (let i = 0; i < stars.length; i++) {
     const s = stars[i];
     if (isWarp) {
@@ -171,7 +157,6 @@ function draw() {
       const dy = cy - s.y;
       const dist = Math.hypot(dx, dy);
       if (dist < 30) {
-        s.vanish = true;
         stars[i] = initStar();
         continue;
       }
@@ -186,7 +171,6 @@ function draw() {
     ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
     ctx.fill();
   }
-
   if (isWarp) {
     warpFrame++;
     if (warpFrame >= warpDuration) {
@@ -203,22 +187,23 @@ function startWarp() {
   warpFrame = 0;
 }
 
-// ------------------------------
-// 每日一次限制
-// ------------------------------
+// 每日限制
 function getToday() {
   return new Date().toDateString();
 }
 function canUse(key) {
-  return localStorage.getItem(key) !== getToday();
-}
-function useOnce(key) {
-  localStorage.setItem(key, getToday());
+  const today = getToday();
+  const count = parseInt(localStorage.getItem(key + '_cnt') || 0);
+  return count < 2;
 }
 
-// ------------------------------
+function useOnce(key) {
+  const today = getToday();
+  const count = parseInt(localStorage.getItem(key + '_cnt') || 0);
+  localStorage.setItem(key + '_cnt', count + 1);
+}
+
 // 
-// ------------------------------
 function drawPool(min, max, cnt) {
   let pool = [];
   for (let i = min; i <= max; i++) pool.push(i);
@@ -231,9 +216,6 @@ function drawPool(min, max, cnt) {
   return res.sort((a, b) => a - b);
 }
 
-// ------------------------------
-// 显示球
-// ------------------------------
 let copyStr = '';
 
 function showBalls(nums, blueIdx) {
@@ -251,14 +233,12 @@ function showBalls(nums, blueIdx) {
   });
 }
 
-// ------------------------------
-// 按钮绑定
-// ------------------------------
+// 绑定按钮（兼容全部浏览器）
 function bind(btnId, key, gen) {
   const btn = document.getElementById(btnId);
-  btn.onclick = () => {
+  btn.addEventListener('click', function() {
     if (!canUse(key)) {
-      alert('今日算力已用尽，明天再来');
+      alert('今日算力用尽，明天再试');
       return;
     }
     document.getElementById('tip').innerText = '正在连接算力...';
@@ -277,7 +257,7 @@ function bind(btnId, key, gen) {
       btn.disabled = false;
       useOnce(key);
     }, 3000);
-  };
+  });
 }
 
 // 双色球
@@ -296,7 +276,7 @@ bind('btn2', 'dlt', () => {
   return ['大乐透', [...front, ...back], [5,6], copy];
 });
 
-// 福彩3D
+// 3D
 bind('btn3', '3d', () => {
   const n = [
     Math.floor(Math.random()*10),
@@ -307,12 +287,23 @@ bind('btn3', '3d', () => {
   return ['福彩3D', n, [], copy];
 });
 
-// 复制
-document.getElementById('copy').onclick = () => {
-  navigator.clipboard.writeText(copyStr).then(() => {
+// 复制兼容所有浏览器
+document.getElementById('copy').addEventListener('click', function() {
+  if (!copyStr) return;
+  try {
+    const textArea = document.createElement('textarea');
+    textArea.value = copyStr;
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-9999px';
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textArea);
     alert('复制成功：\n' + copyStr);
-  });
-};
+  } catch (e) {
+    alert('复制失败，请手动选择复制');
+  }
+});
 </script>
 </body>
 </html>
