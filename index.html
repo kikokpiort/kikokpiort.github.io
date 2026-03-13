@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>尚壁无限彩票站</title>
+<title>无限彩票站</title>
 <style>
 * {
   margin: 0;
@@ -18,6 +18,30 @@ body {
   overflow: hidden;
   height: 100vh;
 }
+
+/* 顶部滚动条 */
+.marquee {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #000;
+  color: red;
+  font-size: 16px;
+  padding: 4px 0;
+  z-index: 999;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.marquee-inner {
+  display: inline-block;
+  animation: marquee 12s linear infinite;
+}
+@keyframes marquee {
+  0%   { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
 #stars {
   position: fixed;
   top: 0;
@@ -29,7 +53,7 @@ body {
 .content {
   position: relative;
   z-index: 2;
-  padding: 40px 20px;
+  padding: 60px 20px 40px;
 }
 .title {
   font-size: 26px;
@@ -107,9 +131,16 @@ button:disabled {
 </style>
 </head>
 <body>
+
+<!-- 顶部两条文字滚动 -->
+<div class="marquee">
+  <div class="marquee-inner" id="marqueeText"></div>
+</div>
+
 <canvas id="stars"></canvas>
+
 <div class="content">
-  <div class="title">尚壁无限彩票站</div>
+  <div class="title">尚壁无限中奖彩票站</div>
   <button id="btn1">双色球</button>
   <button id="btn2">大乐透</button>
   <button id="btn3">福彩3D</button>
@@ -187,7 +218,7 @@ function startWarp() {
   warpFrame = 0;
 }
 
-// 每日限制
+
 function getToday() {
   return new Date().toDateString();
 }
@@ -196,14 +227,12 @@ function canUse(key) {
   const count = parseInt(localStorage.getItem(key + '_cnt') || 0);
   return count < 2;
 }
-
 function useOnce(key) {
-  const today = getToday();
   const count = parseInt(localStorage.getItem(key + '_cnt') || 0);
   localStorage.setItem(key + '_cnt', count + 1);
 }
 
-// 
+// 真随机池
 function drawPool(min, max, cnt) {
   let pool = [];
   for (let i = min; i <= max; i++) pool.push(i);
@@ -233,7 +262,7 @@ function showBalls(nums, blueIdx) {
   });
 }
 
-// 绑定按钮（兼容全部浏览器）
+// 绑定按钮
 function bind(btnId, key, gen) {
   const btn = document.getElementById(btnId);
   btn.addEventListener('click', function() {
@@ -287,7 +316,7 @@ bind('btn3', '3d', () => {
   return ['福彩3D', n, [], copy];
 });
 
-// 复制兼容所有浏览器
+// 复制兼容
 document.getElementById('copy').addEventListener('click', function() {
   if (!copyStr) return;
   try {
@@ -304,6 +333,18 @@ document.getElementById('copy').addEventListener('click', function() {
     alert('复制失败，请手动选择复制');
   }
 });
+
+// ================= 顶部两条滚动文字 =================
+const now = new Date();
+const month = now.getMonth() + 1;
+const day = now.getDate();
+const x = (month * month + day * day) % 100;
+const hitNum = x + 62;
+
+const msg1 = "由于算力有限，每个彩票每天只能两次";
+const msg2 = `本网址上期中奖人数 ${hitNum} 人`;
+document.getElementById('marqueeText').innerText = `${msg1} 　 ${msg2}`;
+
 </script>
 </body>
 </html>
