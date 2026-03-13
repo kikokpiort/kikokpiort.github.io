@@ -1,218 +1,318 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>鸭池彩票生成网 - 一般人我不告诉他</title>
-    <style>
-        body {
-            background: linear-gradient(45deg, #1f1f1f, #444444, #1f1f1f);
-            background-size: 200% 200%;
-            animation: backgroundAnimation 5s ease infinite;
-            font-family: Arial, sans-serif;
-            color: white;
-            text-align: center;
-            padding: 50px;
-        }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>豪杰彩票无限</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  background: #000;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  overflow: hidden;
+  height: 100vh;
+}
 
-        h1 {
-            font-size: 1rem;
-            margin: 3px 0;
-        }
+#stars {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
 
-        .btn {
-            background: #00ff99;
-            color: white;
-            padding: 15px 40px;
-            font-size: 1.2rem;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin: 20px;
-            box-shadow: 0 0 20px rgba(0, 255, 153, 0.5);
-            transition: background-color 0.3s ease;
-        }
+.content {
+  position: relative;
+  z-index: 2;
+  padding: 40px 20px;
+}
 
-        .btn:hover {
-            background: #009966;
-        }
+.title {
+  font-size: 26px;
+  margin-bottom: 30px;
+  color: #ffd700;
+}
 
-        .ball {
-            display: inline-block;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            color: white;
-            line-height: 50px;
-            margin: 10px;
-            font-size: 1.5rem;
-        }
+button {
+  display: block;
+  width: 80%;
+  margin: 12px auto;
+  padding: 16px;
+  font-size: 18px;
+  border: none;
+  border-radius: 50px;
+  background: linear-gradient(90deg, #ff416c, #ff4b2b);
+  color: white;
+  font-weight: bold;
+}
+button:disabled {
+  background: #555;
+}
 
-        .result-text {
-            font-size: 1.2rem;
-            margin: 10px 0;
-        }
+#tip {
+  margin: 20px 0;
+  font-size: 18px;
+  color: #fff;
+}
 
-        select {
-            padding: 10px;
-            margin: 10px;
-            font-size: 1rem;
-            border-radius: 5px;
-            background-color: #444;
-            color: white;
-            border: 1px solid #888;
-        }
+#resultName {
+  font-size: 22px;
+  color: #ffd700;
+  margin: 10px 0;
+}
 
-        #result {
-            margin-top: 30px;
-        }
+#ballArea {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 20px 0;
+  min-height: 60px;
+}
 
-        @keyframes backgroundAnimation {
-            0% {
-                background-position: 0% 0%;
-            }
-            50% {
-                background-position: 100% 100%;
-            }
-            100% {
-                background-position: 0% 0%;
-            }
-        }
-    </style>
+.ball {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 18px;
+  background: #222;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+.ball.red { background: #e00; }
+.ball.blue { background: #06f; }
+
+.roll::after {
+  content: '88888888';
+  position: absolute;
+  animation: roll 0.12s infinite linear;
+}
+@keyframes roll {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-100%); }
+}
+
+#copy {
+  padding: 10px 20px;
+  background: #09f;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  display: none;
+}
+</style>
 </head>
+
 <body>
+<canvas id="stars"></canvas>
 
-    <h1>鸭池彩票生成网<br>一般人我不告诉</h1>
+<div class="content">
+  <div class="title">豪杰彩票无限</div>
+  <button id="btn1">双色球</button>
+  <button id="btn2">大乐透</button>
+  <button id="btn3">福彩3D</button>
+  <div id="tip"></div>
+  <div id="resultName"></div>
+  <div id="ballArea"></div>
+  <button id="copy">复制号码</button>
+</div>
 
-    <select id="starSign">
-        <option value="">选择你的星座</option>
-        <option value="白羊座">白羊座</option>
-        <option value="金牛座">金牛座</option>
-        <option value="双子座">双子座</option>
-        <option value="巨蟹座">巨蟹座</option>
-        <option value="狮子座">狮子座</option>
-        <option value="处女座">处女座</option>
-        <option value="天秤座">天秤座</option>
-        <option value="天蝎座">天蝎座</option>
-        <option value="射手座">射手座</option>
-        <option value="摩羯座">摩羯座</option>
-        <option value="水瓶座">水瓶座</option>
-        <option value="双鱼座">双鱼座</option>
-    </select>
+<script>
+const cvs = document.getElementById('stars');
+const ctx = cvs.getContext('2d');
+let w = window.innerWidth;
+let h = window.innerHeight;
+cvs.width = w;
+cvs.height = h;
 
-    <select id="bloodType">
-        <option value="">选择你的血型</option>
-        <option value="A型">A型</option>
-        <option value="B型">B型</option>
-        <option value="AB型">AB型</option>
-        <option value="O型">O型</option>
-    </select>
+const cx = w / 2;
+const cy = h / 2;
 
-    <select id="zodiac">
-        <option value="">选择你的生肖</option>
-        <option value="鼠">鼠</option>
-        <option value="牛">牛</option>
-        <option value="虎">虎</option>
-        <option value="兔">兔</option>
-        <option value="龙">龙</option>
-        <option value="蛇">蛇</option>
-        <option value="马">马</option>
-        <option value="羊">羊</option>
-        <option value="猴">猴</option>
-        <option value="鸡">鸡</option>
-        <option value="狗">狗</option>
-        <option value="猪">猪</option>
-    </select>
+let stars = [];
+const starCount = 800;
 
-    <br><br>
+function initStar() {
+  return {
+    x: Math.random() * w,
+    y: Math.random() * h,
+    size: Math.random() * 1.5 + 0.5,
+    baseSpeed: Math.random() * 0.2 + 0.1,
+    vanish: false
+  };
+}
 
-    <button id="btn1" class="btn">买3D就点我，不中奖我赔你</button>
-    <button id="btn2" class="btn">逆天改命，买双色球必中500万</button>
+for (let i = 0; i < starCount; i++) stars.push(initStar());
 
-    <div id="result"></div>
+let isWarp = false;
+let warpFrame = 0;
+const warpDuration = 180;
 
-    <script>
-        let lastClickedTime = 0;
-        const colorList = ['#ff6347', '#ff4500', '#2e8b57', '#4682b4', '#d2691e', '#8b0000', '#adff2f', '#00fa9a', '#cd5c5c', '#f0e68c',
-            '#dda0dd', '#90ee90', '#00bfff', '#ff1493', '#ff8c00', '#da70d6', '#8b4513', '#ff69b4', '#ffdead', '#c71585', '#32cd32', '#8a2be2', '#f5deb3', '#f08080', '#e9967a'];
+function draw() {
+  ctx.fillStyle = '#000';
+  ctx.fillRect(0, 0, w, h);
+  ctx.fillStyle = '#fff';
 
-        function generateRandomColors() {
-            let colors = [];
-            for (let i = 0; i < 25; i++) {
-                colors.push(colorList[Math.floor(Math.random() * colorList.length)]);
-            }
-            return colors;
-        }
+  for (let i = 0; i < stars.length; i++) {
+    const s = stars[i];
+    if (isWarp) {
+      const dx = cx - s.x;
+      const dy = cy - s.y;
+      const dist = Math.hypot(dx, dy);
+      if (dist < 30) {
+        s.vanish = true;
+        stars[i] = initStar();
+        continue;
+      }
+      const speed = 12;
+      s.x += dx / dist * speed;
+      s.y += dy / dist * speed;
+    } else {
+      s.x += s.baseSpeed;
+      if (s.x > w) s.x = 0;
+    }
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+    ctx.fill();
+  }
 
-        function randomNumbers(min, max, count) {
-            let numbers = [];
-            while (numbers.length < count) {
-                const num = Math.floor(Math.random() * (max - min + 1)) + min;
-                if (!numbers.includes(num)) {
-                    numbers.push(num);
-                }
-            }
-            return numbers;
-        }
+  if (isWarp) {
+    warpFrame++;
+    if (warpFrame >= warpDuration) {
+      isWarp = false;
+      warpFrame = 0;
+    }
+  }
+  requestAnimationFrame(draw);
+}
+draw();
 
-        function resetBackgroundColor() {
-            document.body.style.background = 'linear-gradient(45deg, #1f1f1f, #444444, #1f1f1f)';
-        }
+function startWarp() {
+  isWarp = true;
+  warpFrame = 0;
+}
 
-        function createBall(color, number) {
-            const ball = document.createElement('div');
-            ball.className = 'ball';
-            ball.style.backgroundColor = color;
-            ball.textContent = number;
-            return ball;
-        }
+// ------------------------------
+// 每日一次限制
+// ------------------------------
+function getToday() {
+  return new Date().toDateString();
+}
+function canUse(key) {
+  return localStorage.getItem(key) !== getToday();
+}
+function useOnce(key) {
+  localStorage.setItem(key, getToday());
+}
 
-        function handleButtonClick(btnId) {
-            const currentTime = Date.now();
-            if (currentTime - lastClickedTime < 5000) {
-                alert('你点的太猛了，奖又跑不了，一会再点等，5秒换换气');
-                return;
-            }
-            lastClickedTime = currentTime;
+// ------------------------------
+// 
+// ------------------------------
+function drawPool(min, max, cnt) {
+  let pool = [];
+  for (let i = min; i <= max; i++) pool.push(i);
+  let res = [];
+  for (let i = 0; i < cnt; i++) {
+    let idx = Math.floor(Math.random() * pool.length);
+    res.push(pool[idx]);
+    pool.splice(idx, 1);
+  }
+  return res.sort((a, b) => a - b);
+}
 
-            const starSign = document.getElementById('starSign').value;
-            const bloodType = document.getElementById('bloodType').value;
-            const zodiac = document.getElementById('zodiac').value;
+// ------------------------------
+// 显示球
+// ------------------------------
+let copyStr = '';
 
-            if (!starSign || !bloodType || !zodiac) {
-                alert('不选星座中不了奖啊玺总，不选生肖白花钱啊丽光');
-                return;
-            }
+function showBalls(nums, blueIdx) {
+  const area = document.getElementById('ballArea');
+  area.innerHTML = '';
+  nums.forEach((n, i) => {
+    const b = document.createElement('div');
+    b.className = 'ball roll';
+    b.classList.add(blueIdx.includes(i) ? 'blue' : 'red');
+    area.appendChild(b);
+    setTimeout(() => {
+      b.classList.remove('roll');
+      b.innerText = n;
+    }, 1200);
+  });
+}
 
-            const resultDiv = document.getElementById('result');
-            resultDiv.innerHTML = ''; // 清除上次的结果
+// ------------------------------
+// 按钮绑定
+// ------------------------------
+function bind(btnId, key, gen) {
+  const btn = document.getElementById(btnId);
+  btn.onclick = () => {
+    if (!canUse(key)) {
+      alert('今日算力已用尽，明天再来');
+      return;
+    }
+    document.getElementById('tip').innerText = '正在连接算力...';
+    document.getElementById('resultName').innerText = '';
+    document.getElementById('ballArea').innerHTML = '';
+    document.getElementById('copy').style.display = 'none';
+    btn.disabled = true;
+    startWarp();
+    setTimeout(() => {
+      const [title, all, bluePos, copy] = gen();
+      document.getElementById('resultName').innerText = title;
+      showBalls(all, bluePos);
+      copyStr = copy;
+      document.getElementById('copy').style.display = 'inline-block';
+      document.getElementById('tip').innerText = '';
+      btn.disabled = false;
+      useOnce(key);
+    }, 3000);
+  };
+}
 
-            const colors = generateRandomColors();
-            let colorIndex = 0;
-            const interval = setInterval(() => {
-                document.body.style.background = colors[colorIndex++];
-                if (colorIndex === colors.length) {
-                    clearInterval(interval);
-                    resetBackgroundColor();
-                    if (btnId === 'btn1') {
-                        const numbers = randomNumbers(0, 9, 3);
-                        const balls = numbers.map(num => createBall(colors[Math.floor(Math.random() * colors.length)], num));
-                        balls.forEach(ball => resultDiv.appendChild(ball));
-                        resultDiv.innerHTML += '<div class="result-text">就买这个号必中，中了请我河的板面就行</div>';
-                    } else if (btnId === 'btn2') {
-                        const redNumbers = randomNumbers(1, 33, 6).sort((a, b) => a - b);
-                        const blueNumber = randomNumbers(1, 16, 1)[0];
-                        redNumbers.forEach(num => resultDiv.appendChild(createBall('red', num)));
-                        resultDiv.appendChild(createBall('blue', blueNumber));
-                        resultDiv.innerHTML += '<div class="result-text">买这个号明天直接去建材城</div>';
-                    }
-                }
-            }, 120);
-        }
+// 双色球
+bind('btn1', 'ssq', () => {
+  const red = drawPool(1, 33, 6);
+  const blue = drawPool(1, 16, 1);
+  const copy = `双色球 红球 ${red.join(' ')} 蓝球 ${blue[0]}`;
+  return ['双色球', [...red, ...blue], [6], copy];
+});
 
-        document.getElementById('btn1').addEventListener('click', () => handleButtonClick('btn1'));
-        document.getElementById('btn2').addEventListener('click', () => handleButtonClick('btn2'));
-    </script>
+// 大乐透
+bind('btn2', 'dlt', () => {
+  const front = drawPool(1, 35, 5);
+  const back = drawPool(1, 12, 2);
+  const copy = `大乐透 前区 ${front.join(' ')} 后区 ${back.join(' ')}`;
+  return ['大乐透', [...front, ...back], [5,6], copy];
+});
 
+// 福彩3D
+bind('btn3', '3d', () => {
+  const n = [
+    Math.floor(Math.random()*10),
+    Math.floor(Math.random()*10),
+    Math.floor(Math.random()*10)
+  ];
+  const copy = `福彩3D ${n.join('')}`;
+  return ['福彩3D', n, [], copy];
+});
+
+// 复制
+document.getElementById('copy').onclick = () => {
+  navigator.clipboard.writeText(copyStr).then(() => {
+    alert('复制成功：\n' + copyStr);
+  });
+};
+</script>
 </body>
 </html>
