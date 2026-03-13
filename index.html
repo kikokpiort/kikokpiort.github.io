@@ -346,5 +346,50 @@ const msg2 = `本网址上期中奖人数 ${hitNum} 人`;
 document.getElementById('marqueeText').innerText = `${msg1} 　 ${msg2}`;
 
 </script>
+<script>
+    // --- 5+ 通用返回键逻辑 (适用于所有三级页面) ---
+    function initBackButtonForSubPage() {
+        console.log("【子页面】开始注册返回键监听...");
+        
+        plus.key.addEventListener('backbutton', function() {
+            console.log("【子页面】捕获到返回键事件！");
+            
+            var self = plus.webview.currentWebview();
+            // 这里的 'homePage' 必须与 index.html 中创建主页时的 ID 一致
+            var homePage = plus.webview.getWebviewById('homePage');
+
+            if (homePage && !homePage.closed) {
+                console.log("【子页面】找到主页，执行返回逻辑...");
+                try {
+                    // 1. 显示主页 (使用 'none' 动画最快且最稳)
+                    homePage.show('none');
+                    
+                    // 2. 稍微延迟后关闭当前页，确保切换流畅
+                    setTimeout(function() {
+                        if (!self.closed) {
+                            self.close('none');
+                            console.log("【子页面】当前页已关闭");
+                        }
+                    }, 100); 
+                } catch (e) {
+                    console.error("【子页面】发生错误:", e);
+                    self.close(); // 出错时强制关闭
+                }
+            } else {
+                console.warn("【子页面】未找到主页，直接关闭当前页");
+                self.close();
+            }
+        }, false);
+        
+        console.log("【子页面】返回键监听注册完成");
+    }
+
+    // 双重保险：确保 plus 环境就绪
+    if (window.plus) {
+        initBackButtonForSubPage();
+    } else {
+        document.addEventListener('plusready', initBackButtonForSubPage, false);
+    }
+</script>
 </body>
 </html>
