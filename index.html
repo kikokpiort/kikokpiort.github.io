@@ -1,395 +1,547 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>无限彩票站</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scalecale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>豪过会查询</title>
 <style>
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Microsoft Yahei", sans-serif;
 }
 body {
-  background: #000;
+  min-height: 100vh;
+  background: linear-gradient(-45deg, #050121, #190844, #251259, #000000);
+  background-size: 400% 400%;
+  animation: bgFlow 18s ease infinite;
   color: #fff;
-  font-family: Arial, sans-serif;
-  text-align: center;
-  overflow: hidden;
-  height: 100vh;
+  overflow-x: hidden;
+  padding: 10px;
 }
-
-/* 顶部滚动条 */
-.marquee {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background: #000;
-  color: red;
-  font-size: 16px;
-  padding: 4px 0;
-  z-index: 999;
-  overflow: hidden;
-  white-space: nowrap;
-}
-.marquee-inner {
-  display: inline-block;
-  animation: marquee 12s linear infinite;
-}
-@keyframes marquee {
-  0%   { transform: translateX(100%); }
-  100% { transform: translateX(-100%); }
-}
-
-#stars {
+#particles {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   z-index: 0;
+  pointer-events: none;
 }
-.content {
+@keyframes bgFlow {
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+.container {
   position: relative;
   z-index: 2;
-  padding: 60px 20px 40px;
+  max-width: 100%;
+  margin: 0 auto;
 }
 .title {
-  font-size: 26px;
-  margin-bottom: 30px;
-  color: #ffd700;
+  text-align: center;
+  font-size: 1.3rem;
+  margin-bottom: 12px;
+  background: linear-gradient(90deg,#4cc9f0,#7209b7,#f72585,#4cc9f0);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: textLight 4s linear infinite;
+  filter: drop-shadow(0 0 8px #7209b7);
 }
-button {
-  display: block;
-  width: 80%;
-  margin: 12px auto;
-  padding: 16px;
-  font-size: 18px;
-  border: none;
-  border-radius: 50px;
-  background: linear-gradient(90deg, #ff416c, #ff4b2b);
-  color: white;
-  font-weight: bold;
-  touch-action: manipulation;
+@keyframes textLight{
+  0%{background-position:0% 50%}
+  100%{background-position:300% 50%}
 }
-button:disabled {
-  background: #555;
+.box-wrap {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-bottom: 10px;
 }
-#tip {
-  margin: 20px 0;
-  font-size: 18px;
-  color: #fff;
-}
-#resultName {
-  font-size: 22px;
-  color: #ffd700;
-  margin: 10px 0;
-}
-#ballArea {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: 20px 0;
-  min-height: 60px;
-}
-.ball {
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  font-size: 18px;
-  background: #222;
-  color: #fff;
+.card {
+  background: rgba(15,5,40,0.45);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(114, 9, 183, 0.4);
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 0 12px rgba(114,9,183,0.25);
   position: relative;
   overflow: hidden;
 }
-.ball.red { background: #e00; }
-.ball.blue { background: #06f; }
-.roll::after {
-  content: '88888888';
-  position: absolute;
-  animation: roll 0.12s infinite linear;
+.card::before{
+  content:"";
+  position:absolute;
+  top:0;left:-100%;
+  width:100%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(247,37,133,0.15),transparent);
+  transition:left 0.5s;
 }
-@keyframes roll {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(-100%); }
+.card h3 {
+  margin-bottom: 8px;
+  color: #4cc9f0;
+  text-shadow: 0 0 6px #4cc9f0;
+  font-size:0.95rem;
 }
-#copy {
-  padding: 10px 20px;
-  background: #09f;
-  color: white;
+.select-item, input {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(76,201,240,0.3);
+  background: rgba(0,0,0,0.5);
+  color: #fff;
+  font-size: 14px;
+  margin-bottom: 8px;
+  outline: none;
+}
+.btn {
+  width: 100%;
+  padding: 9px;
+  border-radius: 6px;
   border: none;
-  border-radius: 30px;
-  display: none;
-  touch-action: manipulation;
+  background: linear-gradient(90deg,#7209b7,#f72585);
+  color: #fff;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.result {
+  margin-top: 5px;
+  padding: 12px;
+  background: rgba(0,0,0,0.4);
+  border-radius: 10px;
+  min-height: 60px;
+  line-height: 1.5;
+  border:1px solid rgba(76,201,240,0.25);
+  color:#e8e8e8;
+  font-size:14px;
+}
+#resBox{
+  scroll-margin-top: 20px;
 }
 </style>
 </head>
 <body>
-
-<!-- 顶部两条文字滚动 -->
-<div class="marquee">
-  <div class="marquee-inner" id="marqueeText"></div>
+<div id="particles"></div>
+<div class="container">
+<h1 class="title">🏮 豪过会查询 🏮</h1>
+<div class="box-wrap">
+<div class="card">
+<h3>📅 农历日期查庙会</h3>
+<select id="_0xyr" class="select-item"></select>
+<select id="_0x11" class="select-item"></select>
+<select id="_0x22" class="select-item"></select>
+<button class="btn" onclick="_0x33()">立即查询</button>
 </div>
-
-<canvas id="stars"></canvas>
-
-<div class="content">
-  <div class="title">尚壁无限中奖彩票站</div>
-  <button id="btn1">双色球</button>
-  <button id="btn2">大乐透</button>
-  <button id="btn3">福彩3D</button>
-  <div id="tip"></div>
-  <div id="resultName"></div>
-  <div id="ballArea"></div>
-  <button id="copy">复制号码</button>
+<div class="card">
+<h3>🏘️ 村庄名称模糊检索</h3>
+<input type="text" id="_0x44" placeholder="输入村落名字">
+<select id="_0xyr2" class="select-item"></select>
+<button class="btn" onclick="_0x55()">搜索村庄</button>
 </div>
-
+<!-- 新增：近一个月庙会查询 -->
+<div class="card">
+<h3>🗓️ 近一个月庙会</h3>
+<button class="btn" onclick="_0x77()">查询未来30天庙会</button>
+</div>
+</div>
+<div class="card" id="resBox">
+<h3>📋 豪过会查询</h3>
+<div class="result" id="_0x66">等待发起查询...</div>
+</div>
+</div>
 <script>
-const cvs = document.getElementById('stars');
-const ctx = cvs.getContext('2d');
-let w = window.innerWidth;
-let h = window.innerHeight;
-cvs.width = w;
-cvs.height = h;
-const cx = w / 2;
-const cy = h / 2;
-
-let stars = [];
-const starCount = 800;
-
-function initStar() {
-  return {
-    x: Math.random() * w,
-    y: Math.random() * h,
-    size: Math.random() * 1.5 + 0.5,
-    baseSpeed: Math.random() * 0.2 + 0.1,
-  };
-}
-for (let i = 0; i < starCount; i++) stars.push(initStar());
-
-let isWarp = false;
-let warpFrame = 0;
-const warpDuration = 180;
-
-function draw() {
-  ctx.fillStyle = '#000';
-  ctx.fillRect(0, 0, w, h);
-  ctx.fillStyle = '#fff';
-  for (let i = 0; i < stars.length; i++) {
-    const s = stars[i];
-    if (isWarp) {
-      const dx = cx - s.x;
-      const dy = cy - s.y;
-      const dist = Math.hypot(dx, dy);
-      if (dist < 30) {
-        stars[i] = initStar();
-        continue;
-      }
-      const speed = 12;
-      s.x += dx / dist * speed;
-      s.y += dy / dist * speed;
-    } else {
-      s.x += s.baseSpeed;
-      if (s.x > w) s.x = 0;
+!function(){
+var _0x7=["正月","二月","三月","四月","五月","六月","七月","八月","九月","十月","冬月","腊月"];
+var _0x8=["初一","初二","初三","初四","初五","初六","初七","初八","初九","初十","十一","十二","十三","十四","十五","十六","十七","十八","十九","二十","廿一","廿二","廿三","廿四","廿五","廿六","廿七","廿八","廿九","三十"];
+var _0xnowY = new Date().getFullYear();
+var _yearList = [_0xnowY-1, 2026, _0xnowY+1];
+var _0xweek = ["星期日","星期一","星期二","星期三","星期四","星期五","星期六"];
+var _0x9=[
+{"lm":"正月","d":"初九","list":["尚璧镇中亓固村"]},
+{"lm":"正月","d":"初十","list":["黄粱梦镇黄粱梦村"]},
+{"lm":"正月","d":"十六","list":["兼庄乡南程庄村"]},
+{"lm":"正月","d":"廿六","list":["河沙镇南文庄","徐庄村"]},
+{"lm":"正月","d":"廿八","list":["黄粱梦镇冯村","丛中村"]},
+{"lm":"二月","d":"初二","list":["户村镇郭河/肖河（圣井岗）"]},
+{"lm":"二月","d":"初三","list":["南吕固乡南吕固村"]},
+{"lm":"二月","d":"初九","list":["代召乡刘庄","井头村"]},
+{"lm":"二月","d":"十一","list":["尚璧镇许庄","三陵乡李三陵村"]},
+{"lm":"二月","d":"十三","list":["河沙镇南榆林","北榆林","户村镇酒务楼"]},
+{"lm":"二月","d":"十五","list":["南堡乡东城子","康庄乡中庄","黄粱梦岳洼/燕庄"]},
+{"lm":"二月","d":"十六","list":["尚璧镇南亓固村"]},
+{"lm":"二月","d":"十七","list":["代召乡梁庄村"]},
+{"lm":"二月","d":"十八","list":["代召乡裴堡","三陵乡中三陵村"]},
+{"lm":"二月","d":"十九","list":["南堡乡沙口","南吕固乡东扶仁","兼庄乡北陈庄","三陵乡黄窑"]},
+{"lm":"二月","d":"二十","list":["南堡乡刘村"]},
+{"lm":"二月","d":"廿一","list":["康庄乡贾沟村"]},
+{"lm":"二月","d":"廿四","list":["河沙镇裴庄","王庄","西堤西堡"]},
+{"lm":"二月","d":"廿五","list":["南吕固乡西扶仁","兼庄乡汉霸庄"]},
+{"lm":"二月","d":"廿六","list":["代召乡堤南堡村"]},
+{"lm":"二月","d":"廿八","list":["尚璧镇北井寨村"]},
+{"lm":"三月","d":"初一","list":["河沙镇七岔道","三陵乡工程/郭窑","兼庄乡西填池"]},
+{"lm":"三月","d":"初三","list":["河沙镇西里堡","户村镇齐村"]},
+{"lm":"三月","d":"初五","list":["代召乡大乐堡","小乐堡"]},
+{"lm":"三月","d":"初六","list":["尚璧镇西尚璧村"]},
+{"lm":"三月","d":"初八","list":["河沙镇南大屯","梁家町","兼庄乡东填池"]},
+{"lm":"三月","d":"十三","list":["户村镇康河","三陵乡薛三陵村"]},
+{"lm":"三月","d":"十五","list":["南吕固乡贾村","河沙镇苗庄/柴庄","康庄乡北李庄","兼庄乡爆台寺"]},
+{"lm":"三月","d":"十六","list":["尚璧镇东尚璧村"]},
+{"lm":"三月","d":"十八","list":["兼庄乡西军师堡村"]},
+{"lm":"三月","d":"二十","list":["康庄乡前牛叫/后牛叫","尚璧镇唐屯"]},
+{"lm":"三月","d":"廿五","list":["黄粱梦镇西三家/大峪庄","尚璧镇东孙庄"]},
+{"lm":"四月","d":"初一","list":["南堡乡西留庄","兼庄乡耒马台"]},
+{"lm":"四月","d":"初二","list":["黄粱梦镇袁庄村"]},
+{"lm":"四月","d":"初四","list":["南堡乡刘庄","代召乡代召","黄粱梦丛中"]},
+{"lm":"四月","d":"初九","list":["南堡乡崔曲/赵庄","黄粱梦卢英堡"]},
+{"lm":"四月","d":"十一","list":["黄粱梦镇黄粱梦村"]},
+{"lm":"四月","d":"十八","list":["兼庄乡东军师堡","三陵乡三陵村"]},
+{"lm":"四月","d":"廿八","list":["代召乡曹乐堡村"]},
+{"lm":"五月","d":"十三","list":["南吕固乡贾村"]},
+{"lm":"五月","d":"十六","list":["南堡乡北泊村"]},
+{"lm":"五月","d":"十九","list":["黄粱梦镇东官庄村"]},
+{"lm":"五月","d":"廿三","list":["三陵乡北高峒村"]},
+{"lm":"五月","d":"廿九","list":["三陵乡王李庄","西袁庄"]},
+{"lm":"六月","d":"初一","list":["户村镇郭河/肖河（圣井岗）"]},
+{"lm":"六月","d":"初二","list":["南吕固乡四留固村"]},
+{"lm":"六月","d":"十三","list":["代召乡大乐堡/小乐堡","三陵乡姜窑","尚璧镇北屯头"]},
+{"lm":"六月","d":"十五","list":["明珠街道东小屯","三陵乡西官庄"]},
+{"lm":"六月","d":"十八","list":["黄粱梦镇祝村"]},
+{"lm":"六月","d":"十九","list":["三陵乡李三陵村"]},
+{"lm":"六月","d":"二十","list":["黄粱梦镇丛中村"]},
+{"lm":"六月","d":"廿四","list":["南吕固乡贾村"]},
+{"lm":"六月","d":"廿五","list":["黄粱梦镇黄粱梦村"]},
+{"lm":"六月","d":"廿八","list":["三陵乡张三陵村"]},
+{"lm":"七月","d":"初一","list":["尚璧镇北井寨村"]},
+{"lm":"七月","d":"初三","list":["南吕固乡皮条屯村"]},
+{"lm":"七月","d":"初十","list":["尚璧镇吴唐营村"]},
+{"lm":"七月","d":"十五","list":["代召乡大乐堡","小乐堡"]},
+{"lm":"七月","d":"十六","list":["康庄乡南牛叫","尚璧镇西孙庄"]},
+{"lm":"七月","d":"十八","list":["三陵乡周窑","高窑"]},
+{"lm":"七月","d":"廿四","list":["代召乡高里堡村"]},
+{"lm":"七月","d":"廿五","list":["兼庄乡西军师堡村"]},
+{"lm":"八月","d":"初一","list":["南吕固乡南吕固村"]},
+{"lm":"八月","d":"初二","list":["三陵乡三陵村"]},
+{"lm":"八月","d":"十五","list":["代召乡大乐堡","小乐堡"]},
+{"lm":"八月","d":"十六","list":["尚璧镇南屯头村"]},
+{"lm":"八月","d":"廿五","list":["三陵乡三陵村"]},
+{"lm":"九月","d":"初一","list":["南吕固乡贾村","河沙镇南文庄/徐庄"]},
+{"lm":"九月","d":"初四","list":["南堡乡北寨村"]},
+{"lm":"九月","d":"初五","list":["代召乡大乐堡、小乐堡"]},
+{"lm":"九月","d":"初六","list":["户村镇霍北村"]},
+{"lm":"九月","d":"初八","list":["黄粱梦镇苏里村"]},
+{"lm":"九月","d":"初九","list":["户村镇郭河/肖河（圣井岗）"]},
+{"lm":"九月","d":"初十","list":["南吕固乡七方、康庄乡停驷头"]},
+{"lm":"九月","d":"十一","list":["三陵乡姜三陵村"]},
+{"lm":"九月","d":"十三","list":["户村镇牛叫河、尚璧镇常庄"]},
+{"lm":"九月","d":"十五","list":["康庄乡东店子/西店子/石坡/康庄/师窑/张庄/姬庄/南李庄、三陵乡寺西窑/陈窑、黄粱梦西耒马台"]},
+{"lm":"九月","d":"十七","list":["黄粱梦镇祝村"]},
+{"lm":"九月","d":"十八","list":["三陵乡两岗村"]},
+{"lm":"九月","d":"十九","list":["西鸭池村"]},
+{"lm":"九月","d":"二十","list":["河沙镇河沙镇/朱冀庄、户村镇东常赦、尚璧镇唐屯"]},
+{"lm":"九月","d":"廿二","list":["河沙镇王东堡、康庄乡于二庄"]},
+{"lm":"九月","d":"廿三","list":["南吕固乡招贤村"]},
+{"lm":"九月","d":"廿四","list":["户村镇户村"]},
+{"lm":"九月","d":"廿五","list":["南吕固乡东召里、黄粱梦东官庄"]},
+{"lm":"九月","d":"廿六","list":["南堡乡院上宋/陈上宋、河沙镇史东堡、三陵乡前郭庄/后郭庄"]},
+{"lm":"九月","d":"廿七","list":["河沙镇辛里/小堤"]},
+{"lm":"九月","d":"廿八","list":["代召乡东大夫庄/西大夫庄、黄粱梦东三家/薛庄、兼庄乡兼庄"]},
+{"lm":"九月","d":"廿九","list":["三陵乡西袁庄"]},
+{"lm":"十月","d":"初二","list":["南吕固乡西召里、代召乡代召"]},
+{"lm":"十月","d":"初三","list":["河沙镇闫庄村"]},
+{"lm":"十月","d":"初四","list":["南堡乡孙庄、代召乡东聂庄/西聂庄、尚璧镇贾口"]},
+{"lm":"十月","d":"初五","list":["河沙镇马堡、尚璧镇西尚璧"]},
+{"lm":"十月","d":"初六","list":["代召乡东张策、河沙镇邢东堡、黄粱梦十五里铺"]},
+{"lm":"十月","d":"初七","list":["河沙镇南泊村"]},
+{"lm":"十月","d":"初八","list":["南堡乡南堡、黄粱梦贵龙岗/南高峒、三陵乡曹庄"]},
+{"lm":"十月","d":"初九","list":["尚璧镇南井寨村"]},
+{"lm":"十月","d":"初十","list":["黄粱梦胡村、三陵乡东陶庄/西陶庄、南堡乡谢南留/王南留/李南留/西留庄"]},
+{"lm":"十月","d":"十一","list":["南吕固乡东扶仁/邵庄"]},
+{"lm":"十月","d":"十二","list":["代召乡刘庄/井头"]},
+{"lm":"十月","d":"十三","list":["河沙镇范庄、黄粱梦黄粱梦、尚璧镇北屯头"]},
+{"lm":"十月","d":"十五","list":["户村镇林村、三陵乡南郑村"]},
+{"lm":"十月","d":"十六","list":["河沙镇夹堤村"]},
+{"lm":"十月","d":"十七","list":["河沙镇李庄村"]},
+{"lm":"十月","d":"十八","list":["代召乡贾庄、尚璧镇后亓固"]},
+{"lm":"十月","d":"二十","list":["户村镇西常赦村"]},
+{"lm":"十月","d":"廿一","list":["河沙镇杜家寺/贺庄"]},
+{"lm":"十月","d":"廿二","list":["河沙镇北文庄村"]},
+{"lm":"十月","d":"廿四","list":["南堡乡北堡、南吕固乡皮条屯"]},
+{"lm":"十月","d":"廿五","list":["南堡乡张策村"]},
+{"lm":"十月","d":"廿六","list":["兼庄乡王安堡村"]},
+{"lm":"十月","d":"廿八","list":["代召乡曹乐堡、康庄乡蔺家河"]},
+{"lm":"十月","d":"廿九","list":["尚璧镇东尚璧村"]},
+{"lm":"冬月","d":"初一","list":["兼庄乡东辛庄村"]},
+{"lm":"冬月","d":"初三","list":["南堡乡西上宋/李上宋"]},
+{"lm":"腊月","d":"初八","list":["代召乡大乐堡、小乐堡"]}
+];
+var _ySel=document.getElementById("_0xyr");
+var _ySel2=document.getElementById("_0xyr2");
+var _mSel=document.getElementById("_0x11");
+var _dSel=document.getElementById("_0x22");
+_yearList.forEach(y=>{
+    let o1=document.createElement("option");o1.value=y;o1.innerText=y+"年";_ySel.appendChild(o1);
+    let o2=document.createElement("option");o2.value=y;o2.innerText=y+"年";_ySel2.appendChild(o2);
+});
+_ySel.value=2026;
+_ySel2.value=2026;
+_0x7.forEach(v=>{let o=document.createElement("option");o.value=v;o.innerText=v;_mSel.appendChild(o)});
+_0x8.forEach(v=>{let o=document.createElement("option");o.value=v;o.innerText=v;_dSel.appendChild(o)});
+const _0xlunar2solar = {
+    2025: {
+        "正月初九":"2025-02-06","正月初十":"2025-02-07","正月十六":"2025-02-13","正月廿六":"2025-02-23","正月廿八":"2025-02-25",
+        "二月初二":"2025-03-01","二月初三":"2025-03-02","二月初九":"2025-03-08","二月十一":"2025-03-10","二月十三":"2025-03-12",
+        "二月十五":"2025-03-14","二月十六":"2025-03-15","二月十七":"2025-03-16","二月十八":"2025-03-17","二月十九":"2025-03-18",
+        "二月二十":"2025-03-19","二月廿一":"2025-03-20","二月廿四":"2025-03-23","二月廿五":"2025-03-24","二月廿六":"2025-03-25","二月廿八":"2025-03-27",
+        "三月初一":"2025-03-29","三月初三":"2025-03-31","三月初五":"2025-04-02","三月初六":"2025-04-03","三月初八":"2025-04-05",
+        "三月十三":"2025-04-10","三月十五":"2025-04-12","三月十六":"2025-04-13","三月十八":"2025-04-15","三月二十":"2025-04-17","三月廿五":"2025-04-22",
+        "四月初一":"2025-04-28","四月初二":"2025-04-29","四月初四":"2025-05-01","四月初九":"2025-05-06","四月十一":"2025-05-08","四月十八":"2025-05-15","四月廿八":"2025-05-25",
+        "五月十三":"2025-06-07","五月十六":"2025-06-10","五月十九":"2025-06-13","五月廿三":"2025-06-17","五月廿九":"2025-06-23",
+        "六月初一":"2025-06-25","六月初二":"2025-06-26","六月十三":"2025-07-07","六月十五":"2025-07-09","六月十八":"2025-07-12","六月十九":"2025-07-13","六月二十":"2025-07-14",
+        "六月廿四":"2025-07-18","六月廿五":"2025-07-19","六月廿八":"2025-07-22",
+        "七月初一":"2025-07-25","七月初三":"2025-07-27","七月初十":"2025-08-03","七月十五":"2025-08-08","七月十六":"2025-08-09","七月十八":"2025-08-11",
+        "七月廿四":"2025-08-17","七月廿五":"2025-08-18",
+        "八月初一":"2025-08-23","八月初二":"2025-08-24","八月十五":"2025-09-06","八月十六":"2025-09-07","八月廿五":"2025-09-16",
+        "九月初一":"2025-09-22","九月初四":"2025-09-25","九月初五":"2025-09-26","九月初六":"2025-09-27","九月初八":"2025-09-29","九月初九":"2025-09-30",
+        "九月初十":"2025-10-01","九月十一":"2025-10-02","九月十三":"2025-10-04","九月十五":"2025-10-06","九月十七":"2025-10-08","九月十八":"2025-10-09","九月十九":"2025-10-10",
+        "九月二十":"2025-10-11","九月廿二":"2025-10-13","九月廿三":"2025-10-14","九月廿四":"2025-10-15","九月廿五":"2025-10-16","九月廿六":"2025-10-17","九月廿七":"2025-10-18",
+        "九月廿八":"2025-10-19","九月廿九":"2025-10-20",
+        "十月初二":"2025-10-23","十月初三":"2025-10-24","十月初四":"2025-10-25","十月初五":"2025-10-26","十月初六":"2025-10-27","十月初七":"2025-10-28","十月初八":"2025-10-29",
+        "十月初九":"2025-10-30","十月初十":"2025-10-31","十月十一":"2025-11-01","十月十二":"2025-11-02","十月十三":"2025-11-03","十月十五":"2025-11-05","十月十六":"2025-11-06",
+        "十月十七":"2025-11-07","十月十八":"2025-11-08","十月二十":"2025-11-10","十月廿一":"2025-11-11","十月廿二":"2025-11-12","十月廿四":"2025-11-14","十月廿五":"2025-11-15",
+        "十月廿六":"2025-11-16","十月廿八":"2025-11-18","十月廿九":"2025-11-19",
+        "冬月初一":"2025-11-21","冬月初三":"2025-11-23","腊月初八":"2026-01-17"
+    },
+    2026: {
+        "正月初九":"2026-02-25","正月初十":"2026-02-26","正月十六":"2026-03-04","正月廿六":"2026-03-14","正月廿八":"2026-03-16",
+        "二月初二":"2026-03-21","二月初三":"2026-03-22","二月初九":"2026-03-28","二月十一":"2026-03-30","二月十三":"2026-04-01",
+        "二月十五":"2026-04-03","二月十六":"2026-04-04","二月十七":"2026-04-05","二月十八":"2026-04-06","二月十九":"2026-04-07",
+        "二月二十":"2026-04-08","二月廿一":"2026-04-09","二月廿四":"2026-04-12","二月廿五":"2026-04-13","二月廿六":"2026-04-14","二月廿八":"2026-04-16",
+        "三月初一":"2026-04-17","三月初三":"2026-04-19","三月初五":"2026-04-21","三月初六":"2026-04-22","三月初八":"2026-04-24",
+        "三月十三":"2026-04-29","三月十五":"2026-05-01","三月十六":"2026-05-02","三月十八":"2026-05-04","三月二十":"2026-05-06","三月廿五":"2026-05-11",
+        "四月初一":"2026-05-16","四月初二":"2026-05-17","四月初四":"2026-05-19","四月初九":"2026-05-24","四月十一":"2026-05-26","四月十八":"2026-06-02","四月廿八":"2026-06-12",
+        "五月十三":"2026-06-27","五月十六":"2026-06-30","五月十九":"2026-07-03","五月廿三":"2026-07-07","五月廿九":"2026-07-13",
+        "六月初一":"2026-07-15","六月初二":"2026-07-16","六月十三":"2026-07-27","六月十五":"2026-07-29","六月十八":"2026-08-01","六月十九":"2026-08-02","六月二十":"2026-08-03",
+        "六月廿四":"2026-08-07","六月廿五":"2026-08-08","六月廿八":"2026-08-11",
+        "七月初一":"2026-08-13","七月初三":"2026-08-15","七月初十":"2026-08-22","七月十五":"2026-08-27","七月十六":"2026-08-28","七月十八":"2026-08-30",
+        "七月廿四":"2026-09-05","七月廿五":"2026-09-06",
+        "八月初一":"2026-09-11","八月初二":"2026-09-12","八月十五":"2026-09-25","八月十六":"2026-09-26","八月廿五":"2026-10-05",
+        "九月初一":"2026-10-11","九月初四":"2026-10-14","九月初五":"2026-10-15","九月初六":"2026-10-16","九月初八":"2026-10-18","九月初九":"2026-10-19",
+        "九月初十":"2026-10-20","九月十一":"2026-10-21","九月十三":"2026-10-23","九月十五":"2026-10-25","九月十七":"2026-10-27","九月十八":"2026-10-28","九月十九":"2026-10-29",
+        "九月二十":"2026-10-30","九月廿二":"2026-11-01","九月廿三":"2026-11-02","九月廿四":"2026-11-03","九月廿五":"2026-11-04","九月廿六":"2026-11-05","九月廿七":"2026-11-06",
+        "九月廿八":"2026-11-07","九月廿九":"2026-11-08",
+        "十月初二":"2026-11-11","十月初三":"2026-11-12","十月初四":"2026-11-13","十月初五":"2026-11-14","十月初六":"2026-11-15","十月初七":"2026-11-16","十月初八":"2026-11-17",
+        "十月初九":"2026-11-18","十月初十":"2026-11-19","十月十一":"2026-11-20","十月十二":"2026-11-21","十月十三":"2026-11-22","十月十五":"2026-11-24","十月十六":"2026-11-25",
+        "十月十七":"2026-11-26","十月十八":"2026-11-27","十月二十":"2026-11-29","十月廿一":"2026-11-30","十月廿二":"2026-12-01","十月廿四":"2026-12-03","十月廿五":"2026-12-04",
+        "十月廿六":"2026-12-05","十月廿八":"2026-12-07","十月廿九":"2026-12-08",
+        "冬月初一":"2026-12-10","冬月初三":"2026-12-12","腊月初八":"2027-01-19"
+    },
+    2027: {
+        "正月初九":"2027-02-14","正月初十":"2027-02-15","正月十六":"2027-02-21","正月廿六":"2027-03-03","正月廿八":"2027-03-05",
+        "二月初二":"2027-03-10","二月初三":"2027-03-11","二月初九":"2027-03-17","二月十一":"2027-03-19","二月十三":"2027-03-21",
+        "二月十五":"2027-03-23","二月十六":"2027-03-24","二月十七":"2027-03-25","二月十八":"2027-03-26","二月十九":"2027-03-27",
+        "二月二十":"2027-03-28","二月廿一":"2027-03-29","二月廿四":"2027-04-01","二月廿五":"2027-04-02","二月廿六":"2027-04-03","二月廿八":"2027-04-05",
+        "三月初一":"2027-04-06","三月初三":"2027-04-08","三月初五":"2027-04-10","三月初六":"2027-04-11","三月初八":"2027-04-13",
+        "三月十三":"2027-04-18","三月十五":"2027-04-20","三月十六":"2027-04-21","三月十八":"2027-04-23","三月二十":"2027-04-25","三月廿五":"2027-04-30",
+        "四月初一":"2027-05-05","四月初二":"2027-05-06","四月初四":"2027-05-08","四月初九":"2027-05-13","四月十一":"2027-05-15","四月十八":"2027-05-22","四月廿八":"2027-06-01",
+        "五月十三":"2027-06-16","五月十六":"2027-06-19","五月十九":"2027-06-22","五月廿三":"2027-06-26","五月廿九":"2027-07-02",
+        "六月初一":"2027-07-04","六月初二":"2027-07-05","六月十三":"2027-07-16","六月十五":"2027-07-18","六月十八":"2027-07-21","六月十九":"2027-07-22","六月二十":"2027-07-23",
+        "六月廿四":"2027-07-27","六月廿五":"2027-07-28","六月廿八":"2027-07-31",
+        "七月初一":"2027-08-02","七月初三":"2027-08-04","七月初十":"2027-08-11","七月十五":"2027-08-16","七月十六":"2027-08-17","七月十八":"2027-08-19",
+        "七月廿四":"2027-08-25","七月廿五":"2027-08-26",
+        "八月初一":"2027-08-31","八月初二":"2027-09-01","八月十五":"2027-09-14","八月十六":"2027-09-15","八月廿五":"2027-09-24",
+        "九月初一":"2027-09-30","九月初四":"2027-10-03","九月初五":"2027-10-04","九月初六":"2027-10-05","九月初八":"2027-10-07","九月初九":"2027-10-08",
+        "九月初十":"2027-10-09","九月十一":"2027-10-10","九月十三":"2027-10-12","九月十五":"2027-10-14","九月十七":"2027-10-16","九月十八":"2027-10-17","九月十九":"2027-10-18",
+        "九月二十":"2027-10-19","九月廿二":"2027-10-21","九月廿三":"2027-10-22","九月廿四":"2027-10-23","九月廿五":"2027-10-24","九月廿六":"2027-10-25","九月廿七":"2027-10-26",
+        "九月廿八":"2027-10-27","九月廿九":"2027-10-28",
+        "十月初二":"2027-10-31","十月初三":"2027-11-01","十月初四":"2027-11-02","十月初五":"2027-11-03","十月初六":"2027-11-04","十月初七":"2027-11-05","十月初八":"2027-11-06",
+        "十月初九":"2027-11-07","十月初十":"2027-11-08","十月十一":"2027-11-09","十月十二":"2027-11-10","十月十三":"2027-11-11","十月十五":"2027-11-13","十月十六":"2027-11-14",
+        "十月十七":"2027-11-15","十月十八":"2027-11-16","十月二十":"2027-11-18","十月廿一":"2027-11-19","十月廿二":"2027-11-20","十月廿四":"2027-11-22","十月廿五":"2027-11-23",
+        "十月廿六":"2027-11-24","十月廿八":"2027-11-26","十月廿九":"2027-11-27",
+        "冬月初一":"2027-11-29","冬月初三":"2027-12-01","腊月初八":"2028-01-20"
     }
-    ctx.beginPath();
-    ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
-    ctx.fill();
-  }
-  if (isWarp) {
-    warpFrame++;
-    if (warpFrame >= warpDuration) {
-      isWarp = false;
-      warpFrame = 0;
+};
+function _0xlc2yc(y, lm, ld) {
+    let key = lm + ld;
+    if (!_0xlunar2solar[y] || !_0xlunar2solar[y][key]) return null;
+    return new Date(_0xlunar2solar[y][key]);
+}
+function scrollToRes(){
+    document.getElementById("resBox").scrollIntoView({behavior:"smooth"});
+}
+window._0x33=function(){
+    let selY=+document.getElementById("_0xyr").value;
+    let m=document.getElementById("_0x11").value;
+    let d=document.getElementById("_0x22").value;
+    let box=document.getElementById("_0x66");
+    let fit=_0x9.filter(x=>x.lm===m&&x.d===d);
+    if(fit.length===0){
+        box.innerHTML="<span style='color:#ff7777'>该农历日期暂无庙会安排</span>";
+        scrollToRes();
+        return;
     }
-  }
-  requestAnimationFrame(draw);
-}
-draw();
-
-function startWarp() {
-  isWarp = true;
-  warpFrame = 0;
-}
-
-
-function getToday() {
-  return new Date().toDateString();
-}
-function canUse(key) {
-  const today = getToday();
-  const count = parseInt(localStorage.getItem(key + '_cnt') || 0);
-  return count < 2;
-}
-function useOnce(key) {
-  const count = parseInt(localStorage.getItem(key + '_cnt') || 0);
-  localStorage.setItem(key + '_cnt', count + 1);
-}
-
-// 真随机池
-function drawPool(min, max, cnt) {
-  let pool = [];
-  for (let i = min; i <= max; i++) pool.push(i);
-  let res = [];
-  for (let i = 0; i < cnt; i++) {
-    let idx = Math.floor(Math.random() * pool.length);
-    res.push(pool[idx]);
-    pool.splice(idx, 1);
-  }
-  return res.sort((a, b) => a - b);
-}
-
-let copyStr = '';
-
-function showBalls(nums, blueIdx) {
-  const area = document.getElementById('ballArea');
-  area.innerHTML = '';
-  nums.forEach((n, i) => {
-    const b = document.createElement('div');
-    b.className = 'ball roll';
-    b.classList.add(blueIdx.includes(i) ? 'blue' : 'red');
-    area.appendChild(b);
-    setTimeout(() => {
-      b.classList.remove('roll');
-      b.innerText = n;
-    }, 1200);
-  });
-}
-
-// 绑定按钮
-function bind(btnId, key, gen) {
-  const btn = document.getElementById(btnId);
-  btn.addEventListener('click', function() {
-    if (!canUse(key)) {
-      alert('今日算力用尽，明天再试');
-      return;
+    let gd=_0xlc2yc(selY, m, d);
+    if(!gd){
+        box.innerHTML="<span style='color:#ff7777'>日期解析失败</span>";
+        scrollToRes();
+        return;
     }
-    document.getElementById('tip').innerText = '正在连接算力...';
-    document.getElementById('resultName').innerText = '';
-    document.getElementById('ballArea').innerHTML = '';
-    document.getElementById('copy').style.display = 'none';
-    btn.disabled = true;
-    startWarp();
-    setTimeout(() => {
-      const [title, all, bluePos, copy] = gen();
-      document.getElementById('resultName').innerText = title;
-      showBalls(all, bluePos);
-      copyStr = copy;
-      document.getElementById('copy').style.display = 'inline-block';
-      document.getElementById('tip').innerText = '';
-      btn.disabled = false;
-      useOnce(key);
-    }, 3000);
-  });
+    let weekStr=_0xweek[gd.getDay()];
+    let dateStr=`${gd.getMonth()+1}月${gd.getDate()}日`;
+    let html=`<div>🔔 农历：${m}${d}</div>
+<div>📅 ${selY}年阳历：${dateStr} ${weekStr}</div>
+<div>🏘️ 对应庙会村落：<br>${fit[0].list.join('、')}</div>`;
+    box.innerHTML=html;
+    scrollToRes();
 }
-
-// 双色球
-bind('btn1', 'ssq', () => {
-  const red = drawPool(1, 33, 6);
-  const blue = drawPool(1, 16, 1);
-  const copy = `双色球 红球 ${red.join(' ')} 蓝球 ${blue[0]}`;
-  return ['双色球', [...red, ...blue], [6], copy];
-});
-
-// 大乐透
-bind('btn2', 'dlt', () => {
-  const front = drawPool(1, 35, 5);
-  const back = drawPool(1, 12, 2);
-  const copy = `大乐透 前区 ${front.join(' ')} 后区 ${back.join(' ')}`;
-  return ['大乐透', [...front, ...back], [5,6], copy];
-});
-
-// 3D
-bind('btn3', '3d', () => {
-  const n = [
-    Math.floor(Math.random()*10),
-    Math.floor(Math.random()*10),
-    Math.floor(Math.random()*10)
-  ];
-  const copy = `福彩3D ${n.join('')}`;
-  return ['福彩3D', n, [], copy];
-});
-
-// 复制兼容
-document.getElementById('copy').addEventListener('click', function() {
-  if (!copyStr) return;
-  try {
-    const textArea = document.createElement('textarea');
-    textArea.value = copyStr;
-    textArea.style.position = 'fixed';
-    textArea.style.left = '-9999px';
-    document.body.appendChild(textArea);
-    textArea.select();
-    document.execCommand('copy');
-    document.body.removeChild(textArea);
-    alert('复制成功：\n' + copyStr);
-  } catch (e) {
-    alert('复制失败，请手动选择复制');
-  }
-});
-
-// ================= 顶部两条滚动文字 =================
-const now = new Date();
-const month = now.getMonth() + 1;
-const day = now.getDate();
-const x = (month * month + day * day) % 100;
-const hitNum = x + 62;
-
-const msg1 = "由于算力有限，每个彩票每天只能两次";
-const msg2 = `本网址上期中奖人数 ${hitNum} 人`;
-document.getElementById('marqueeText').innerText = `${msg1} 　 ${msg2}`;
-
-</script>
-<script>
-    // --- 5+ 通用返回键逻辑 (适用于所有三级页面) ---
-    function initBackButtonForSubPage() {
-        console.log("【子页面】开始注册返回键监听...");
-        
-        plus.key.addEventListener('backbutton', function() {
-            console.log("【子页面】捕获到返回键事件！");
-            
-            var self = plus.webview.currentWebview();
-            // 这里的 'homePage' 必须与 index.html 中创建主页时的 ID 一致
-            var homePage = plus.webview.getWebviewById('homePage');
-
-            if (homePage && !homePage.closed) {
-                console.log("【子页面】找到主页，执行返回逻辑...");
-                try {
-                    // 1. 显示主页 (使用 'none' 动画最快且最稳)
-                    homePage.show('none');
-                    
-                    // 2. 稍微延迟后关闭当前页，确保切换流畅
-                    setTimeout(function() {
-                        if (!self.closed) {
-                            self.close('none');
-                            console.log("【子页面】当前页已关闭");
-                        }
-                    }, 100); 
-                } catch (e) {
-                    console.error("【子页面】发生错误:", e);
-                    self.close(); // 出错时强制关闭
-                }
-            } else {
-                console.warn("【子页面】未找到主页，直接关闭当前页");
-                self.close();
+window._0x55=function(){
+    let key=document.getElementById("_0x44").value.trim();
+    if(!key){alert("请输入村庄名称关键词");return}
+    let selY=+document.getElementById("_0xyr2").value;
+    let box=document.getElementById("_0x66");
+    let arr=[];
+    _0x9.forEach(it=>{
+        it.list.forEach(v=>{
+            if(v.includes(key)){
+                let gDate=_0xlc2yc(selY, it.lm, it.d);
+                if(!gDate)return;
+                let w=_0xweek[gDate.getDay()];
+                arr.push({vil:v,lun:it.lm+it.d,sol:`${selY}年${gDate.getMonth()+1}月${gDate.getDate()}日`,week:w})
             }
-        }, false);
-        
-        console.log("【子页面】返回键监听注册完成");
+        })
+    });
+    if(arr.length===0){
+        box.innerHTML="<span style='color:#ff7777'>未检索到匹配的村庄庙会信息</span>";
+        scrollToRes();
+        return;
     }
+    let h="";
+    arr.forEach(t=>{
+        h+=`<div>村落名称：${t.vil}</div>
+<div>农历庙会日：${t.lun}</div>
+<div>阳历：${t.sol}｜${t.week}</div>
+<hr style="margin:6px 0;border:rgba(76,201,240,0.2)">`;
+    });
+    box.innerHTML=h;
+    scrollToRes();
+}
 
-    // 双重保险：确保 plus 环境就绪
-    if (window.plus) {
-        initBackButtonForSubPage();
-    } else {
-        document.addEventListener('plusready', initBackButtonForSubPage, false);
+// (76,201,240,0.2)">`;
+ // 修复版：精确查询未来30天庙会（按自然日，0点起算）
+window._0x77 = function () {
+  const oneDayMs = 86400000; // 一天毫秒数
+  const now = new Date();
+
+  // 今天 00:00:00
+  const todayStart = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate()
+  );
+
+  // 30天后 00:00:00（不含）
+  const monthLaterStart = new Date(todayStart.getTime() + 30 * oneDayMs);
+
+  const box = document.getElementById("_0x66");
+  const res = [];
+
+  // 遍历所有年份的农历阳历映射
+  for (const yearStr in _0xlunar2solar) {
+    const year = Number(yearStr);
+    const dateMap = _0xlunar2solar[year];
+
+    for (const lunarKey in dateMap) {
+      const dateStr = dateMap[lunarKey];
+      const sDate = new Date(dateStr);
+      if (isNaN(sDate)) continue;
+
+      // 只比较日期：>=今天 且 <30天后那天
+      if (sDate >= todayStart && sDate < monthLaterStart) {
+        const lm = lunarKey.replace(/[初廿一二三四五六七八九十]+$/g, "");
+        const d = lunarKey.replace(lm, "");
+        const item = _0x9.find((x) => x.lm === lm && x.d === d);
+        if (!item) continue;
+
+        const week = _0xweek[sDate.getDay()];
+        res.push({
+          solar: sDate,
+          lunar: lunarKey,
+          villages: item.list,
+          week: week,
+          year: year,
+        });
+      }
     }
+  }
+
+  // 按日期升序
+  res.sort((a, b) => a.solar - b.solar);
+
+  if (res.length === 0) {
+    box.innerHTML = "<span style='color:#ff7777'>未来30天暂无庙会安排</span>";
+    scrollToRes();
+    return;
+  }
+
+  let html = `<div style="color:#4cc9f0;margin-bottom:8px;">📅 今日起未来30天庙会（精准自然日）</div>`;
+  res.forEach((item) => {
+    const s = item.solar;
+    const solStr = `${item.year}年${s.getMonth() + 1}月${s.getDate()}日`;
+    html += `
+<div>农历：${item.lunar}</div>
+<div>阳历：${solStr}｜${item.week}</div>
+<div>🏘️ 村落：${item.villages.join('、')}</div>
+<hr style="margin:6px 0;border:rgba(76,201,240,0.2)">`;
+  });
+
+  box.innerHTML = html;
+  scrollToRes();
+};
+
+// 粒子动画
+let pCanvas=document.createElement("canvas");
+pCanvas.id="particles";
+document.body.appendChild(pCanvas);
+let ctx=pCanvas.getContext("2d");
+let w,h,partArr=[];
+function resizeCanvas(){w=window.innerWidth;h=window.innerHeight;pCanvas.width=w;pCanvas.height=h}
+resizeCanvas();
+window.addEventListener("resize",resizeCanvas);
+class Particle{
+constructor(){
+this.x=Math.random()*w;
+this.y=Math.random()*h;
+this.r=Math.random()*2+0.5;
+this.speedX=Math.random()*0.4-0.2;
+this.speedY=Math.random()*0.4-0.2;
+this.color=["#4cc9f0","#7209b7","#f72585"][Math.floor(Math.random()*3)];
+}
+update(){
+this.x+=this.speedX;
+this.y+=this.speedY;
+if(this.x<0||this.x>w)this.speedX*=-1;
+if(this.y<0||this.y>h)this.speedY*=-1;
+}
+draw(){
+ctx.beginPath();
+ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
+ctx.fillStyle=this.color;
+ctx.fill();
+}
+}
+for(let i=0;i<=40;i++)partArr.push(new Particle());
+function animatePart(){
+ctx.clearRect(0,0,w,h);
+for(let i=0;i<partArr.length;i++){
+partArr[i].update();
+partArr[i].draw();
+}
+requestAnimationFrame(animatePart);
+}
+animatePart();
+}();
 </script>
 </body>
 </html>
